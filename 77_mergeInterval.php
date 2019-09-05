@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * This problem was asked by Snapchat.
+ * Given a list of possibly overlapping intervals, return a new list of intervals where all overlapping intervals have been merged.
+ * The input list is not necessarily ordered in any way.
+ * For example, given [(1, 3), (5, 8), (4, 10), (20, 25)], you should return [(1, 3), (4, 10), (20, 25)].
+ */
+
 $arr = [[1, 3], [5, 8], [4, 10], [20, 25]];
 $arr = [[1, 3], [4, 20]];
 $arr = array_merge($arr, [[9, 16]]);
@@ -15,17 +22,22 @@ function mergeInterval ($arr):array
     $t = $arr[0];
     for ($i = 1; $i < $len; $i++) {
         $z = $arr[$i];
+        // Merge the intervals
         if ($z[0] <= $t[1] && $t[1] < $z[1]) {
             $t[1] = $z[1];
         }
 
+        // If the current one is the last interval and is merged, include the parent interval
         if ($i == $len - 1 && $z[1] < $t[1]) {
             array_push($a, $t);
         }
         
+        
         if ($z[0] > $t[1]) {
+            // if current one is not merged, include previous merging interval
             array_push($a, $t);
             $t = $z;
+            // if current one is the last interval and not been merged, include it
             if ($i == $len - 1) {
                 array_push($a, $z);
             }
